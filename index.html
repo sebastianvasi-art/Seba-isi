@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!-- 👇 AGREGADO -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Para mi amor ❤️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 🌌 Fondo -->
+    <canvas id="estrellas"></canvas>
+
+    <h1>Para ti ❤️</h1>
+
+    <p class="mensaje">
+        Eres la mejor parte de mis días, gracias por estar conmigo ❤️
+    </p>
+
+    <p>Desde que llegaste, todo es mejor...</p>
+
+    <!-- 🎥 Video -->
+    <video id="videoIntro" autoplay loop muted playsinline>
+        <source src="video.MOV" type="video/mp4">
+    </video>
+
+    <!-- 📸 Galería -->
+    <h2>Nuestros momentos 📸</h2>
+
+    <div class="carrusel">
+        
+        <button class="btn prev" onclick="mover(-1)">❮</button>
+
+        <div class="viewport">
+            <div class="contenedor-carrusel" id="carrusel">
+                <img src="foto1.JPG">
+                <img src="foto2.JPG">
+                <img src="foto3.JPG">
+            </div>
+        </div>
+
+        <button class="btn next" onclick="mover(1)">❯</button>
+
+    </div>
+
+    <!-- 💖 Botón -->
+    <button class="btn-amor" onclick="mostrarMensaje()">Haz clic ❤️</button>
+
+    <p id="sorpresa" style="display:none;">
+        Te amo muchísimo 💖
+    </p>
+
+    <!-- 💌 Carta -->
+    <div class="contenedor-carta">
+        <div class="carta" id="carta" onclick="abrirCarta()">
+            <div class="frente">💌 Haz clic para abrir</div>
+            <div class="dentro">
+                <p>
+                    Desde que llegaste a mi vida todo cambió ❤️<br><br>
+                    Gracias por cada momento, cada risa y cada abrazo.<br><br>
+                    Te amo muchísimo 💖
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎵 Audio -->
+    <audio id="musica">
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+    function mostrarMensaje() {
+        document.getElementById("sorpresa").style.display = "block";
+        for (let i = 0; i < 10; i++) crearCorazon();
+    }
+
+    function crearCorazon() {
+        const corazon = document.createElement("div");
+        corazon.classList.add("corazon");
+        corazon.innerHTML = "❤️";
+        corazon.style.left = Math.random() * window.innerWidth + "px";
+        document.body.appendChild(corazon);
+        setTimeout(() => corazon.remove(), 3000);
+    }
+
+    function abrirCarta() {
+        const carta = document.getElementById("carta");
+        const musica = document.getElementById("musica");
+
+        carta.classList.toggle("abierta");
+
+        if (carta.classList.contains("abierta")) {
+            musica.play();
+        } else {
+            musica.pause();
+            musica.currentTime = 0;
+        }
+    }
+
+    window.onload = function() {
+        const canvas = document.getElementById("estrellas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let estrellas = [];
+
+        for (let i = 0; i < 100; i++) {
+            estrellas.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 2
+            });
+        }
+
+        function dibujar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+
+            estrellas.forEach(e => {
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(dibujar);
+        }
+
+        dibujar();
+    };
+    </script>
+
+    <!-- 👇 SOLO ESTA PARTE CAMBIÓ (RESPONSIVE) -->
+    <script>
+    let index = 0;
+
+    function mover(direccion) {
+        const carrusel = document.getElementById("carrusel");
+        const total = carrusel.children.length;
+
+        index += direccion;
+
+        if (index < 0) index = total - 1;
+        if (index >= total) index = total - 1;
+
+        const ancho = window.innerWidth <= 600 ? 220 : 300;
+
+        carrusel.style.transform = `translateX(-${index * ancho}px)`;
+    }
+    </script>
+
+</body>
+</html>
